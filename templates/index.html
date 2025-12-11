@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Welcome to Charity Sale
+{% endblock %}
+
+{% block content %}
+    <div class="banner">
+        <div class="overlay">
+            <h1>為愛心義賣，讓舊物重獲新生</h1>
+        </div>
+    </div>
+    <div class="mission">
+        <h2>我們的理念</h2>
+        <p>我們相信，每一個物品都應該有第二次生命。透過我們的平台，您可以將用不到的物品轉化為一份愛心，幫助有需要的人。同時，您也可以在這裡找到物美價廉的商品，為環保盡一份力。</p>
+    </div>
+    <div class="featured-products">
+        <h2>主要產品</h2>
+        <div class="product-list">
+            {% for product in products %}
+                <div class="product-item">
+                    <a href="{{ url_for('product', product_id=product.id) }}">
+                        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+                        <h3>{{ product.name }}</h3>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit "{{ product.name }}"
+{% endblock %}
+
+{% block content %}
+    <h1>修改產品</h1>
+    <form method="post">
+        <label for="name">商品名稱</label>
+        <input type="text" name="name"
+               placeholder="Product name"
+               value="{{ product.name }}"></input>
+
+        <label for="image">圖片</label>
+        <input type="text" name="image"
+               placeholder="Image file name"
+               value="{{ product.image }}"></input>
+
+        <label for="price">單價</label>
+        <input type="number" name="price"
+               step="0.01"
+               placeholder="Price"
+               value="{{ product.price }}"></input>
+
+        <label for="description">簡短描述</label>
+        <textarea name="description"
+                  placeholder="Product description">{{ product.description }}</textarea>
+        <button type="submit">儲存變更</button>
+    </form>
+
+    <hr>
+
+    <form action="{{ url_for('delete', product_id=product.id) }}" method="post">
+        <input type="submit" value="刪除產品"
+               onclick="return confirm('Are you sure you want to delete this product?')">
+    </form>
+
+{% endblock %}
