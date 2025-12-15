@@ -1,5 +1,6 @@
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
+import markdown
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
@@ -32,7 +33,10 @@ def product(product_id):
     conn = get_db_connection()
     product = conn.execute('SELECT * FROM products WHERE id = ?', (product_id,)).fetchone()
     conn.close()
-    return render_template('product.html', product=product)
+
+    description_html = markdown.markdown(product['description'])   # markdown
+
+    return render_template('product.html', product=product, description_html=description_html)
 
 @app.route('/add', methods=('GET', 'POST'))
 def add():

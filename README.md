@@ -6,7 +6,7 @@ This is a web application for an online charity sale system, built with Python F
 
 1. **Install dependencies:**
    ```bash
-   pip install Flask Pillow
+   pip install Flask Pillow markdown
    ```
 
 2. **Initialize the database:**

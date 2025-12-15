@@ -153,6 +153,11 @@ footer {
     flex: 1;
 }
 
+.product-info .price {
+    font-size: 30px;
+    margin: 10px, 0px;    /* 這行無作用，要從其他地方改 */
+}
+
 .purchase-form {
     margin-top: 40px;
 }
@@ -175,3 +180,38 @@ footer {
     border: none;
     cursor: pointer;
 }
+
+/* 每個 product 的 description 部分 */
+.product-description {
+    margin-top: 20px;
+    line-height: 1.6;     
+    font-size: 16px;
+}
+
+.product-description h2,
+.product-description h3 {
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.product-description ul {
+    padding-left: 20px;   
+    margin-bottom: 22px;
+}
+
+.product-description li {
+    margin-bottom: 6px;    
+}
+
+.product-description strong {
+    font-weight: bold;
+}
+
+.product-description em {
+    font-style: italic;
+}
+
+.product-description p {
+    margin-bottom: 22px;
+}
+/* 每個 product 的 description 部分 */

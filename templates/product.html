@@ -12,7 +12,10 @@
         <div class="product-info">
             <h1>{{ product.name }}</h1>
             <p class="price">${{ "%.2f"|format(product.price) }}</p>
-            <p>{{ product.description }}</p>
+            
+            <div class="product-description">
+            {{ description_html | safe }}
+            </div>
         </div>
     </div>
     <div class="purchase-form">
