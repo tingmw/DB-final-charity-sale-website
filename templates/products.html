@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Products
+    所有商品
 {% endblock %}
 
 {% block content %}
+    <div class="products-header">
+        <h1>所有商品</h1>
+        <p class="products-header-desc">
+            探索我們精心挑選的義賣品，每件物品都蘊含著獨特的故事與價值，期待與您結緣。
+        </p>
+    </div>
     <div class="search-bar">
         <form action="{{ url_for('products') }}" method="get">
-            <input type="text" name="search" placeholder="搜尋產品...">
+            <input type="text" name="search" placeholder="搜尋商品...">
             <button type="submit">搜尋</button>
         </form>
     </div>

@@ -1,28 +1,35 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant-Tw">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %} {% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
     <nav>
         <div class="logo">
-            <a href="{{ url_for('index') }}">Charity Sale</a>
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/title.png') }}" alt="瑋瑋孟孟愛心義賣">
+            </a>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ url_for('index') }}">首頁</a></li>
-            <li><a href="{{ url_for('products') }}">產品頁面</a></li>
+            <li><a href="{{ url_for('index') }}"><strong>首頁</strong></a></li>
+            <li><a href="{{ url_for('products') }}"><strong>商品頁面</strong></a></li>
             <li class="dropdown">
-                <a href="javascript:void(0)" class="dropbtn">編輯產品</a>
+                <a href="javascript:void(0)" class="dropbtn"><strong>編輯商品</strong></a>
                 <div class="dropdown-content">
-                    <a href="{{ url_for('add') }}">新增產品</a>
-                    <a href="{{ url_for('edit', product_id=1) }}">編輯產品</a>
+                    <a href="{{ url_for('add') }}"><strong>新增商品</strong></a>
+                    <a href="{{ url_for('edit', product_id=1) }}"><strong>編輯商品</strong></a>
                 </div>
             </li>
         </ul>
     </nav>
+    <div class="nav-placeholder"></div>
     <div class="container">
         {% for message in get_flashed_messages() %}
             <div class="alert">{{ message }}</div>
@@ -30,7 +37,7 @@
         {% block content %} {% endblock %}
     </div>
     <footer>
-        <p>Charity Sale &copy; 2025</p>
+        <p>瑋瑋孟孟愛心義賣 &copy; 2025</p>
     </footer>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>

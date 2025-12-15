@@ -62,6 +62,9 @@ def add():
 def edit(product_id):
     conn = get_db_connection()
     product = conn.execute('SELECT * FROM products WHERE id = ?', (product_id,)).fetchone()
+    
+    all_products = conn.execute('SELECT id, name FROM products ORDER BY name').fetchall()
+    
     conn.close()
 
     if request.method == 'POST':
@@ -81,7 +84,7 @@ def edit(product_id):
             conn.close()
             return redirect(url_for('products'))
 
-    return render_template('edit.html', product=product)
+    return render_template('edit.html', product=product, all_products=all_products)
 
 @app.route('/delete/<int:product_id>', methods=('POST',))
 def delete(product_id):

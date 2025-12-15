@@ -1,21 +1,23 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Welcome to Charity Sale
+    瑋瑋孟孟愛心義賣
 {% endblock %}
 
 {% block content %}
     <div class="banner">
-        <div class="overlay">
-            <h1>為愛心義賣，讓舊物重獲新生</h1>
+    </div>
+    <div class="missionBG">
+        <div class="mission">
+            <h2>關於 <img src="{{ url_for('static', filename='images/title.png') }}" alt="Title Image" class="mission-title-img"></h2>
+            <p>我們相信，每一個物品都應該有第二次生命。透過我們的平台，您可以將用不到的物品轉化為一份愛心，幫助有需要的人。同時，您也可以在這裡找到物美價廉的商品，為環保盡一份力。</p>
         </div>
     </div>
-    <div class="mission">
-        <h2>我們的理念</h2>
-        <p>我們相信，每一個物品都應該有第二次生命。透過我們的平台，您可以將用不到的物品轉化為一份愛心，幫助有需要的人。同時，您也可以在這裡找到物美價廉的商品，為環保盡一份力。</p>
-    </div>
     <div class="featured-products">
-        <h2>主要產品</h2>
+        <h1>精選商品</h1>
+        <p class="featured-products-desc">
+            這些是我們精選的義賣商品，每一件都代表著一份愛心與環保承諾。
+        </p>
         <div class="product-list">
             {% for product in products %}
                 <div class="product-item">
