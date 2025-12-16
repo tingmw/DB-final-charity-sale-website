@@ -422,7 +422,6 @@ footer {
 }
 
 .admin-form-wrapper select {
-    /* 讓選單看起來像輸入框 */
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
