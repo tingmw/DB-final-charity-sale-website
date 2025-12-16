@@ -1,9 +1,20 @@
 import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
+from werkzeug.utils import secure_filename
 import markdown
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
+
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'images')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
@@ -42,16 +53,26 @@ def product(product_id):
 def add():
     if request.method == 'POST':
         name = request.form['name']
-        image = request.form['image']
+        file = request.files.get('image')
         price = request.form['price']
         description = request.form['description']
+        
+        image_filename = None
 
         if not name:
             flash('Name is required!')
+        elif file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            image_filename = 'images/' + filename
         else:
+            flash('Image file is required or file type is not allowed!')
+            return render_template('add.html')
+
+        if name and image_filename:
             conn = get_db_connection()
             conn.execute('INSERT INTO products (name, image, price, description) VALUES (?, ?, ?, ?)',
-                         (name, image, price, description))
+                         (name, image_filename, price, description))
             conn.commit()
             conn.close()
             return redirect(url_for('products'))
@@ -62,16 +83,23 @@ def add():
 def edit(product_id):
     conn = get_db_connection()
     product = conn.execute('SELECT * FROM products WHERE id = ?', (product_id,)).fetchone()
-
+    
     all_products = conn.execute('SELECT id, name FROM products ORDER BY name').fetchall()
     
     conn.close()
 
     if request.method == 'POST':
         name = request.form['name']
-        image = request.form['image']
+        new_file = request.files.get('image')
         price = request.form['price']
         description = request.form['description']
+        
+        image_filename = product['image'] 
+        
+        if new_file and new_file.filename != '' and allowed_file(new_file.filename):
+            filename = secure_filename(new_file.filename)
+            new_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            image_filename = 'images/' + filename     
 
         if not name:
             flash('Name is required!')
@@ -79,7 +107,7 @@ def edit(product_id):
             conn = get_db_connection()
             conn.execute('UPDATE products SET name = ?, image = ?, price = ?, description = ?'
                          ' WHERE id = ?',
-                         (name, image, price, description, product_id))
+                         (name, image_filename, price, description, product_id))
             conn.commit()
             conn.close()
             return redirect(url_for('products'))
