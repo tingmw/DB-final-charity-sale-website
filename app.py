@@ -120,7 +120,6 @@ def delete(product_id):
     conn.execute('DELETE FROM products WHERE id = ?', (product_id,))
     conn.commit()
     conn.close()
-    flash('Product was successfully deleted!')
     return redirect(url_for('products'))
 
 @app.route('/payment', methods=['GET', 'POST'])
