@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    結帳
+{% endblock %}
+
+{% block content %}
+<div class="checkout-page-container">
+    <h1 class="page-title">訂單結帳</h1>
+    
+    <div class="purchase-form cart-summary">
+        <h2 class="section-title">您的購物清單</h2>
+        <table class="checkout-table">
+            <thead>
+                <tr>
+                    <th>商品項目</th>
+                    <th>小計</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <span class="product-name">{{ item.info.name }}</span>
+                        <div class="product-meta">單價: ${{ item.info.price }} | 數量: {{ item.quantity }}</div>
+                    </td>
+                    <td>${{ item.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td>應付總計</td>
+                    <td>${{ total }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="purchase-form checkout-info">
+        <h2 class="section-title">收件資訊</h2>
+        <form method="post">
+            <label for="name">姓名</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="phone">電話</label>
+            <input type="tel" id="phone" name="phone" required>
+            
+            <label for="email">電子郵件</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="address">地址</label>
+            <input type="text" id="address" name="address" required>
+            
+            <button type="submit">確認資訊並選擇付款方式</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

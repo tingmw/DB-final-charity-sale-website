@@ -36,6 +36,14 @@
         {% endfor %}
         {% block content %} {% endblock %}
     </div>
+    {% if session.get('cart') %}
+    <a href="{{ url_for('checkout') }}" class="fixed-cart-btn">
+        購物車 
+        <span class="cart-count">
+            {{ session['cart']|length }}
+        </span>
+    </a>
+    {% endif %}
     <footer>
         <p>瑋瑋孟孟愛心義賣 &copy; 2025</p>
     </footer>

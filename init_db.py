@@ -8,6 +8,8 @@ with open('schema.sql') as f:
 
 cur = connection.cursor()
 
+cur.execute("DELETE FROM orders;")
+
 des1 = '''
 ### 產品描述
 以天然植物油為基底，手工冷製而成的植萃香皂。

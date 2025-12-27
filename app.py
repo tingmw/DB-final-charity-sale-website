@@ -1,5 +1,6 @@
 import sqlite3
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, session
+import json
 from werkzeug.utils import secure_filename
 import markdown
 import os
@@ -121,6 +122,59 @@ def delete(product_id):
     conn.commit()
     conn.close()
     return redirect(url_for('products'))
+
+@app.route('/add_to_cart/<int:product_id>', methods=['POST'])
+def add_to_cart(product_id):
+    quantity = int(request.form.get('quantity', 1))
+    if 'cart' not in session:
+        session['cart'] = {}
+    
+    cart = session['cart']
+    p_id = str(product_id)
+    if p_id in cart:
+        cart[p_id] += quantity
+    else:
+        cart[p_id] = quantity
+    
+    session['cart'] = cart
+    flash('商品已加入購物車！')
+    return redirect(url_for('products'))
+
+@app.route('/checkout', methods=['GET', 'POST'])
+def checkout():
+    if 'cart' not in session or not session['cart']:
+        flash('購物車是空的，快去逛逛吧！')
+        return redirect(url_for('products'))
+
+    conn = get_db_connection()
+    cart_items = []
+    grand_total = 0
+    
+    for p_id, qty in session['cart'].items():
+        product = conn.execute('SELECT * FROM products WHERE id = ?', (int(p_id),)).fetchone()
+        if product:
+            item_total = product['price'] * qty
+            grand_total += item_total
+            cart_items.append({'info': product, 'quantity': qty, 'total': item_total})
+
+    if request.method == 'POST':
+        name = request.form['name']
+        phone = request.form['phone']
+        email = request.form['email']
+        address = request.form['address']
+
+        order_details = json.dumps([{'name': i['info']['name'], 'qty': i['quantity']} for i in cart_items])
+        
+        conn.execute('INSERT INTO orders (customer_name, customer_phone, customer_email, customer_address, order_items, total_price) VALUES (?, ?, ?, ?, ?, ?)',
+                     (name, phone, email, address, order_details, grand_total))
+        conn.commit()
+        conn.close()
+        
+        session.pop('cart', None)
+        return redirect(url_for('payment'))
+
+    conn.close()
+    return render_template('checkout.html', items=cart_items, total=grand_total)
 
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
