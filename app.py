@@ -137,13 +137,11 @@ def add_to_cart(product_id):
         cart[p_id] = quantity
     
     session['cart'] = cart
-    flash('商品已加入購物車！')
     return redirect(url_for('products'))
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     if 'cart' not in session or not session['cart']:
-        flash('購物車是空的，快去逛逛吧！')
         return redirect(url_for('products'))
 
     conn = get_db_connection()
