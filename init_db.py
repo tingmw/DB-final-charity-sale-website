@@ -8,7 +8,6 @@ with open('schema.sql') as f:
 
 cur = connection.cursor()
 
-cur.execute("DELETE FROM orders;")
 
 des1 = '''
 ### 產品描述
